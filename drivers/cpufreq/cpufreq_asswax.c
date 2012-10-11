@@ -81,10 +81,14 @@ static unsigned int ramp_down_step;
 #define DEFAULT_MAX_CPU_LOAD 70
 static unsigned long max_cpu_load;
 
+
+
 //This was defined TODO research portin of this function since its declared
-/* From BrazilianWax X CPU Load 
+/*From BrazilianWax X CPU Load */
 #define DEFAULT_X_CPU_LOAD 80
-static unsigned long x_cpu_load; */
+static unsigned long x_cpu_load;
+
+
 
 /*
  * CPU freq will be decreased if measured load < min_cpu_load;
@@ -93,10 +97,12 @@ static unsigned long x_cpu_load; */
 static unsigned long min_cpu_load;
 
 //This was defined TODO research portin of this function since its declared
-/* Rapid Minimum cpu load
+/*Rapid Minimum cpu load*/
 #define RAPID_MIN_CPU_LOAD 10
 static unsigned long rapid_min_cpu_load;
- */
+
+
+
 /*
  * The minimum amount of time to spend at a frequency before we can ramp up.
  * Notice we ignore this when we are below the ideal frequency.
@@ -826,7 +832,9 @@ static int __init cpufreq_asswax_init(void)
 	ramp_up_step = DEFAULT_RAMP_UP_STEP;
 	ramp_down_step = DEFAULT_RAMP_DOWN_STEP;
 	max_cpu_load = DEFAULT_MAX_CPU_LOAD;
+	x_cpu_load = DEFAULT_X_CPU_LOAD;
 	min_cpu_load = DEFAULT_MIN_CPU_LOAD;
+	rapid_min_cpu_load = RAPID_MIN_CPU_LOAD;
 
 	spin_lock_init(&cpumask_lock);
 
