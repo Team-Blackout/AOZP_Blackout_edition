@@ -83,7 +83,7 @@ static unsigned long max_cpu_load;
 
 
 
-//This was defined TODO research portin of this function since its declared
+//fixed by Zarboz
 /*From BrazilianWax X CPU Load */
 #define DEFAULT_X_CPU_LOAD 80
 static unsigned long x_cpu_load;
@@ -96,7 +96,7 @@ static unsigned long x_cpu_load;
 #define DEFAULT_MIN_CPU_LOAD 35
 static unsigned long min_cpu_load;
 
-//This was defined TODO research portin of this function since its declared
+//Fixed by Zarboz
 /*Rapid Minimum cpu load*/
 #define RAPID_MIN_CPU_LOAD 10
 static unsigned long rapid_min_cpu_load;
