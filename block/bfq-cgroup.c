@@ -308,7 +308,11 @@ static struct bfq_group *__bfq_cic_change_cgroup(struct bfq_data *bfqd,
 			cic_set_bfqq(cic, NULL, 0);
 			bfq_log_bfqq(bfqd, async_bfqq,
 				     "cic_change_group: %p %d",
+<<<<<<< HEAD
 				     async_bfqq, async_bfqq->ref);
+=======
+				     async_bfqq, atomic_read(&async_bfqq->ref));
+>>>>>>> 45c9c90... adding BadAss Governor
 			bfq_put_queue(async_bfqq);
 		}
 	}
@@ -702,7 +706,11 @@ static struct cgroup_subsys_state *bfqio_create(struct cgroup_subsys *subsys,
  * will not be destroyed until the tasks sharing the ioc die.
  */
 static int bfqio_can_attach(struct cgroup_subsys *subsys, struct cgroup *cgroup,
+<<<<<<< HEAD
 			    struct task_struct *tsk, bool threadgroup)
+=======
+			    struct task_struct *tsk)
+>>>>>>> 45c9c90... adding BadAss Governor
 {
 	struct io_context *ioc;
 	int ret = 0;
@@ -724,8 +732,12 @@ static int bfqio_can_attach(struct cgroup_subsys *subsys, struct cgroup *cgroup,
 }
 
 static void bfqio_attach(struct cgroup_subsys *subsys, struct cgroup *cgroup,
+<<<<<<< HEAD
 			 struct cgroup *prev, struct task_struct *tsk,
 			 bool threadgroup)
+=======
+			 struct cgroup *prev, struct task_struct *tsk)
+>>>>>>> 45c9c90... adding BadAss Governor
 {
 	struct io_context *ioc;
 	struct cfq_io_context *cic;
@@ -830,3 +842,7 @@ static struct bfq_group *bfq_alloc_root_group(struct bfq_data *bfqd, int node)
 	return bfqg;
 }
 #endif
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45c9c90... adding BadAss Governor

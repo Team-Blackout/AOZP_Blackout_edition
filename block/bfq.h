@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * BFQ-v3r4 for 2.6.39: data structures and common functions prototypes.
+=======
+ * BFQ-v4 for 3.0: data structures and common functions prototypes.
+>>>>>>> 45c9c90... adding BadAss Governor
  *
  * Based on ideas and code from CFQ:
  * Copyright (C) 2003 Jens Axboe <axboe@kernel.dk>
@@ -590,3 +594,7 @@ static struct bfq_queue *bfq_get_queue(struct bfq_data *bfqd,
 static void bfq_put_async_queues(struct bfq_data *bfqd, struct bfq_group *bfqg);
 static void bfq_exit_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq);
 #endif
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45c9c90... adding BadAss Governor
