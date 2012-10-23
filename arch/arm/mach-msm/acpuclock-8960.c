@@ -4,6 +4,7 @@
  * it under the terms of the GNU General Public License version 2 and
  * only version 2 as published by the Free Software Foundation.
  * Modified by Zarboz
+ * Modified by Zarboz for OC tables and UV selection
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -825,7 +826,7 @@ static struct acpu_level acpu_freq_tbl_8627[] = {
 	{ 0, { 0 } }
 };
 
-static unsigned long acpuclk_8960_get_rate(int cpu)
+unsigned long acpuclk_8960_get_rate(int cpu)
 {
 	return scalable[cpu].current_speed->khz;
 }
@@ -1585,6 +1586,48 @@ static void kraitv2_apply_vmin(struct acpu_level *tbl)
 			tbl->vdd_core = MIN_VDD_SC;
 }
 
+/*#ifdef CONFIG_CMDLINE_OPTIONS
+uint32_t acpu_check_khz_value(unsigned long khz)
+{
+	struct acpu_level *f;
+
+	if (khz > 1944000)
+		return CONFIG_MSM_CPU_FREQ_MAX;
+
+	if (khz < 192)
+		return CONFIG_MSM_CPU_FREQ_MIN;
+
+	for (f = acpu_freq_tbl_8960_kraitv2_fast; f->speed.khz != 0; f++) {
+		if (khz < 192000) {
+			if (f->speed.khz == (khz*1000))
+				return f->speed.khz;
+			if ((khz*1000) > f->speed.khz) {
+				f++;
+				if ((khz*1000) < f->speed.khz) {
+					f--;
+					return f->speed.khz;
+				}
+				f--;
+			}
+		}
+		if (f->speed.khz == khz) {
+			return 1;
+		}
+		if (khz > f->speed.khz) {
+			f++;
+			if (khz < f->speed.khz) {
+				f--;
+				return f->speed.khz;
+			}
+			f--;
+		}
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL(acpu_check_khz_value);
+#endif
+*/
 static struct acpu_level * __init select_freq_plan(void)
 {
 	struct acpu_level *l, *max_acpu_level = NULL;
