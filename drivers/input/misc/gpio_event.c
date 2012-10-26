@@ -20,9 +20,7 @@
 #include <linux/hrtimer.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
-#ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
 #include <linux/atmel_qt602240.h>
-#endif
 
 struct gpio_event {
 	struct gpio_event_input_devs *input_devs;

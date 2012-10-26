@@ -63,7 +63,7 @@ static DEFINE_MUTEX(reload_lock);
 struct atmel_ts_data {
 	struct i2c_client *client;
 	struct input_dev *input_dev;
-	struct workqueue_struct *atmel_wq;9f9536085843dc03fc55c63965de313fdd47f424
+	struct workqueue_struct *atmel_wq;
 	struct workqueue_struct *atmel_delayed_wq;
 	struct workqueue_struct *atmel_cable_vbus_wq;
 	struct work_struct check_delta_work;
@@ -145,7 +145,6 @@ static void restore_normal_threshold(struct atmel_ts_data *ts);
 static void confirm_calibration(struct atmel_ts_data *ts, uint8_t recal, uint8_t reason);
 static void multi_input_report(struct atmel_ts_data *ts);
 
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
 int s2w_switch = 1;
 bool scr_suspended = false, exec_count = true;
@@ -206,7 +205,6 @@ void sweep2wake_pwrtrigger(void) {
         return;
 }
 #endif
-
 
 static int i2c_atmel_read(struct i2c_client *client, uint16_t address, uint8_t *data, uint8_t length)
 {
@@ -745,7 +743,6 @@ static ssize_t atmel_info_show(struct device *dev,
 
 static DEVICE_ATTR(info, S_IRUGO, atmel_info_show, NULL);
 
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
 static ssize_t atmel_sweep2wake_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
@@ -770,7 +767,6 @@ static ssize_t atmel_sweep2wake_dump(struct device *dev,
 static DEVICE_ATTR(sweep2wake, (S_IWUSR|S_IRUGO),
 	atmel_sweep2wake_show, atmel_sweep2wake_dump);
 #endif
-
 
 static struct kobject *android_touch_kobj;
 
@@ -1236,7 +1232,6 @@ static void htc_input_report(struct input_dev *idev,
 static void multi_input_report(struct atmel_ts_data *ts)
 {
 	uint8_t loop_i, finger_report = 0;
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         int prevx = 0, nextx = 0;
 #endif
@@ -1255,18 +1250,15 @@ static void multi_input_report(struct atmel_ts_data *ts)
 				} else
 					htc_input_report(ts->input_dev, &ts->finger_data[loop_i],
 							1, (ts->finger_count == ++finger_report));
-				if (ts->debug_log_level & 0x2)
-					printk(KERN_INFO "[TP]Finger %d=> X:%d, Y:%d, w:%d, z:%d, F:%d\n",
-
 					
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
-					
-// 					printk(KERN_INFO "[sweep2wake]: %d=> X:%d, Y:%d, w:%d, z:%d, F:%d\n",
-// 						loop_i + 1,
-// 						ts->finger_data[loop_i].x, ts->finger_data[loop_i].y,
-// 						ts->finger_data[loop_i].w, ts->finger_data[loop_i].z,
-// 						ts->finger_count);
-
+					/*Sweep2wakedebugmessage
+					*printk(KERN_INFO "[sweep2wake]: %d=> X:%d, Y:%d, w:%d, z:%d, F:%d\n",
+					*	loop_i + 1,
+					*	ts->finger_data[loop_i].x, ts->finger_data[loop_i].y,
+					*	ts->finger_data[loop_i].w, ts->finger_data[loop_i].z,
+					*	ts->finger_count);
+					*/
                         //left->right
                         if ((ts->finger_count == 1) && (scr_suspended == true) && (s2w_switch > 0)) {
                                 prevx = 10;
@@ -1341,7 +1333,6 @@ static void multi_input_report(struct atmel_ts_data *ts)
 // 						ts->finger_data[loop_i].x, ts->finger_data[loop_i].y,
 // 						ts->finger_data[loop_i].w, ts->finger_data[loop_i].z,
 // 						ts->finger_count);
-
 			} else
 				return;
 		}
@@ -1439,7 +1430,6 @@ static irqreturn_t atmel_irq_thread(int irq, void *ptr)
 				compatible_input_report(ts->input_dev, NULL, 0, 1, 0, 0);
 			else
 				htc_input_report(ts->input_dev, NULL, 0, 1);
-
 			
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
                          /* if finger released, reset count & barriers */
@@ -2515,6 +2505,7 @@ static int atmel_224e_ts_suspend(struct i2c_client *client, pm_message_t mesg)
 {
 	struct atmel_ts_data *ts = i2c_get_clientdata(client);
 	printk(KERN_INFO "[TP]%s:enter unlock 0\n", __func__);
+
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         if (s2w_switch > 0) {
                 //screen off, enable_irq_wake
@@ -2554,7 +2545,6 @@ static int atmel_224e_ts_suspend(struct i2c_client *client, pm_message_t mesg)
 			get_object_address(ts, GEN_ACQUISITIONCONFIG_T8) + T8_CFG_ATCHCALST,
 			ts->ATCH_EXT, 4);
 	}
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         if (s2w_switch == 0) {
 #endif
@@ -2568,13 +2558,11 @@ static int atmel_224e_ts_suspend(struct i2c_client *client, pm_message_t mesg)
 		get_object_address(ts, GEN_POWERCONFIG_T7) + T7_CFG_IDLEACQINT, 0x0);
 	i2c_atmel_write_byte_data(client,
 		get_object_address(ts, GEN_POWERCONFIG_T7) + T7_CFG_ACTVACQINT, 0x0);
-
 	
 
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         }
 #endif
-
 	return 0;
 }
 
@@ -2582,7 +2570,6 @@ static int atmel_224e_ts_resume(struct i2c_client *client)
 {
 	struct atmel_ts_data *ts = i2c_get_clientdata(client);
 	uint8_t loop_i = 0;
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         if (s2w_switch > 0) {
                 //screen on, disable_irq_wake
@@ -2590,7 +2577,6 @@ static int atmel_224e_ts_resume(struct i2c_client *client)
                 disable_irq_wake(client->irq);
         }
 #endif
-
 
 	printk(KERN_INFO "[TP] unlock change to 1\n");
 
@@ -2616,7 +2602,6 @@ static int atmel_224e_ts_resume(struct i2c_client *client)
 				ts->locking_config[0]);
 		}
 	}
-
 #ifdef CONFIG_TOUCHSCREEN_VILLE_SWEEP2WAKE
         if (s2w_switch == 0) {
 #endif
